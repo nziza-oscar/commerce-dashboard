@@ -18,6 +18,7 @@
                     colors: {
                         sidebar: '#7E22CE',
                         sidebarHover: '#9333EA',
+                        primary:"#7E22CE"
                     }
                 }
             }
@@ -26,7 +27,7 @@
 </head>
 <body class="bg-gray-50 h-screen flex poppins-regular" x-data="app()">
     <!-- Sidebar -->
-    <div class="w-64 bg-sidebar text-white flex flex-col h-screen fixed">
+    <div class="w-64 bg-sidebar text-white flex flex-col h-screen fixed hidden sm:block" >
         <!-- Logo -->
         <div class="p-6">
             <h1 class="text-2xl font-bold text-yellow-400">007 DEV</h1>
@@ -93,12 +94,15 @@
     </div>
     
     <!-- Main Content -->
-    <div class="ml-64 flex-1 flex flex-col">
+    <div class="ml-auto sm:ml-64 flex-1 flex flex-col">
         <!-- Header -->
         <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+            <button class="bg-primary px-3 py-2 text-white rounded" @click="openSidebar =!openSidebar">
+                <i class="fa fa-bars"></i>
+            </button>
             <h1 class="text-xl font-bold">ADMIN</h1>
             
-            <div class="flex-1 mx-8">
+            <div class="flex-1 mx-8 hidden sm:block">
                 <div class="relative">
                     <input type="text" placeholder="Search" class="w-full max-w-md pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500" x-model="searchQuery">
                     <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
@@ -117,7 +121,7 @@
                 <div class="flex items-center" x-data="{ profileMenu: false }">
                     <div class="flex items-center cursor-pointer" @click="profileMenu = !profileMenu">
                         <img src="images/avatar-4.jpg" alt="Profile" class="w-10 h-10 rounded-full">
-                        <span class="ml-2 font-medium">John kalisa</span>
+                        <span class="ml-2 font-medium sr-only">John kalisa</span>
                         <i class="fas fa-chevron-down ml-2"></i>
                     </div>
                     
@@ -133,7 +137,7 @@
         <!-- Content -->
         <main class="flex-1 p-6">
             <!-- Metrics Cards -->
-            <div class="grid grid-cols-4 gap-6 mb-8">
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-8">
                 <!-- Shipped Orders -->
                 <div class="bg-blue-500 rounded-lg p-6 text-white relative overflow-hidden">
                     <div class="relative z-10">
@@ -180,9 +184,9 @@
             </div>
             
             <!-- Recent Orders and Trends -->
-            <div class="grid grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
                 <!-- Recent Orders -->
-                <div class="col-span-2 bg-white rounded-lg shadow-sm p-6">
+                <div class="col-span-2 bg-white rounded-lg shadow-sm p-6 overflow-x-auto">
                     <h2 class="text-xl font-medium mb-6">Recent Orders</h2>
                     
                     <table class="w-full">
@@ -263,6 +267,7 @@
 
             return { 
     activeTab: 'dashboard',
+    openSidebar:false,
     searchQuery: '',
     metrics: {
         shipped: 67,
