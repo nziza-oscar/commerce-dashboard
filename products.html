@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIHEMART Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+<link href="styles/style.css" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sidebar: '#7E22CE',
+                        sidebarHover: '#9333EA',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 h-screen flex poppins-regular" x-data="{ 
+    sidebarOpen: true,
+    activeTab: 'products',
+    searchQuery: '',
+    timeFilter: 'This Month',
+    currentPage: 1,
+    totalPages: 40,
+    products: [
+        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Electronics', price: '200,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-1.png' },
+        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Clothing', price: '10,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-12.png' },
+        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Shoe & Fashion', price: '40,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-3.png' },
+        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Toys & Games', price: '204,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-4.png' },
+        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Home & Kitchen', price: '2,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-5.png' },
+        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Clothing', price: '4,500FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-6.png' },
+        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Toys & Games', price: '4,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-6.png' },
+        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Clothing', price: '5,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-8.png' },
+        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Others', price: '15,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-9.png' },
+        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Other', price: '20,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-10.png' }
+    ],
+    pages: [1, 5, 10, 15, 25, 30, 40],
+    
+    setPage(page) {
+        this.currentPage = page;
+    },
+    
+    nextPage() {
+        if (this.currentPage < this.totalPages) {
+            this.currentPage++;
+        }
+    },
+    
+    prevPage() {
+        if (this.currentPage > 1) {
+            this.currentPage--;
+        }
+    }
+}">
+    <!-- Sidebar -->
+    <div class="w-64 bg-sidebar text-white flex flex-col h-screen fixed">
+        <!-- Logo -->
+        <div class="p-6">
+            <h1 class="text-2xl font-bold text-yellow-400">NIHEMART</h1>
+        </div>
+        <hr class="mx-2">
+        <!-- Navigation -->
+        <nav class="flex-1 px-4 py-4">
+            <a href="index.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" ">
+                <i class="fas fa-th-large w-6"></i>
+                <span class="ml-3">Dashboard</span>
+            </a>
+            
+            <a href="#" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" :class="{ 'bg-sidebarHover': activeTab === 'orders' }" @click.prevent="activeTab = 'orders'">
+                <i class="fas fa-shopping-cart w-6"></i>
+                <span class="ml-3">Orders</span>
+            </a>
+            
+            <a href="#" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" :class="{ 'bg-sidebarHover': activeTab === 'products' }" @click.prevent="activeTab = 'products'">
+                <i class="fas fa-box w-6"></i>
+                <span class="ml-3">Products</span>
+            </a>
+            
+            <a href="#" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" :class="{ 'bg-sidebarHover': activeTab === 'categories' }" @click.prevent="activeTab = 'categories'">
+                <i class="fas fa-tags w-6"></i>
+                <span class="ml-3">Categories</span>
+            </a>
+            
+            <a href="#" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" :class="{ 'bg-sidebarHover': activeTab === 'shipping' }" @click.prevent="activeTab = 'shipping'">
+                <i class="fas fa-truck w-6"></i>
+                <span class="ml-3">Shipping</span>
+            </a>
+            
+            <a href="#" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" :class="{ 'bg-sidebarHover': activeTab === 'payments' }" @click.prevent="activeTab = 'payments'">
+                <i class="fas fa-credit-card w-6"></i>
+                <span class="ml-3">Payments</span>
+            </a>
+        </nav>
+        
+        <!-- User Profile -->
+        <div class="p-4 border-t border-purple-800">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-yellow-200 rounded-full flex items-center justify-center text-purple-800 font-bold">
+                    K
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium">Kalisa John</p>
+                    <p class="text-xs text-purple-300">kalisajohn250@gmail.com</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Settings and Logout -->
+        <div class="p-4">
+            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-sidebarHover mb-2">
+                <i class="fas fa-cog w-6"></i>
+                <span class="ml-3">Settings</span>
+            </a>
+            
+            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-sidebarHover">
+                <i class="fas fa-sign-out-alt w-6"></i>
+                <span class="ml-3">Logout</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="ml-64 flex-1 flex flex-col">
+        <!-- Header -->
+        <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold">ADMIN</h1>
+            
+            <div class="flex-1 mx-8">
+                <div class="relative">
+                    <input type="text" placeholder="Search" class="w-full max-w-md pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500" x-model="searchQuery">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="relative">
+                    <i class="fas fa-comment-alt text-blue-500 text-xl"></i>
+                </button>
+                
+                <button class="relative">
+                    <i class="fas fa-bell text-blue-500 text-xl"></i>
+                </button>
+                
+                <div class="flex items-center" x-data="{ profileMenu: false }">
+                    <div class="flex items-center cursor-pointer" @click="profileMenu = !profileMenu">
+                        <img src="images/avatar-4.jpg" alt="Profile" class="w-10 h-10 rounded-full">
+                        <span class="ml-2 font-medium">John kalisa</span>
+                        <i class="fas fa-chevron-down ml-2"></i>
+                    </div>
+                    
+                    <div x-show="profileMenu" @click.away="profileMenu = false" class="absolute right-4 mt-32 w-48 bg-white rounded-md shadow-lg py-1 z-10" style="display: none;">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Content -->
+        <main class="flex-1 p-6">
+            <div class="mb-6">
+                <h2 class="text-xl font-medium text-gray-700">Product List</h2>
+            </div>
+            
+            <div class="flex justify-between mb-6">
+                <button class="px-4 py-2 bg-white border border-orange-500 text-orange-500 rounded-md hover:bg-orange-50">
+                    Add Product
+                </button>
+                
+                <div class="flex space-x-4">
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="px-4 py-2 bg-white border border-gray-300 rounded-md flex items-center">
+                            <span x-text="timeFilter"></span>
+                            <i class="fas fa-chevron-down ml-2"></i>
+                        </button>
+                        
+                        <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10" style="display: none;">
+                            <a href="#" @click.prevent="timeFilter = 'Today'; open = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Today</a>
+                            <a href="#" @click.prevent="timeFilter = 'This Week'; open = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">This Week</a>
+                            <a href="#" @click.prevent="timeFilter = 'This Month'; open = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">This Month</a>
+                            <a href="#" @click.prevent="timeFilter = 'This Year'; open = false" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">This Year</a>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <input type="text" placeholder="Search item..."
+                         class="pl-10 pr-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500" id="search">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product Table -->
+            <div class="bg-white rounded-lg shadow overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-white" >
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Product ID
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Product Name & Size
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Category
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Price
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Stock
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Review
+                            </th>
+                           
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Action
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200" id="products">
+                        <template x-for="(product, index) in products" :key="index">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" x-text="product.id"></td>
+
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-full" :src="product.image" alt="">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900" x-text="product.name"></div>
+                                            <div class="text-sm text-gray-500" x-text="'Size: ' + product.size"></div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900" x-text="product.category"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900" x-text="product.price"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900" x-text="product.stock.left + ' Item Left'"></div>
+                                    <div class="text-sm text-gray-500" x-text="product.stock.sold + ' Sold'"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                        <span class="text-sm text-gray-900" x-text="product.review.rating"></span>
+                                    </div>
+                                    <div class="text-sm text-gray-500" x-text="product.review.count + ' Review'"></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    <button class="text-gray-500 hover:text-gray-700">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="flex justify-center mt-6">
+                <nav class="flex items-center space-x-2">
+                    <button @click="prevPage()" class="px-3 py-2 rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    
+                    <template x-for="page in pages" :key="page">
+                        <button @click="setPage(page)" class="px-3 py-2 rounded-md" :class="currentPage === page ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'" x-text="page"></button>
+                    </template>
+                    
+                    <button class="px-3 py-2 rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300">
+                        <span>...</span>
+                    </button>
+                    
+                    <button @click="nextPage()" class="px-3 py-2 rounded-md bg-gray-200 text-gray-600 hover:bg-gray-300">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </nav>
+            </div>
+        </main>
+    </div>
+    <script>
+        document.getElementById("search").addEventListener("input", function () {
+            let filter = this.value.toLowerCase();
+            let rows = document.querySelectorAll("#products tr");
+    
+            rows.forEach(row => {
+                let projectName = row.children[1].textContent.toLowerCase();
+                row.style.display = projectName.includes(filter) ? "" : "none";
+            });
+        });
+    </script>
+</body>
+</html>
