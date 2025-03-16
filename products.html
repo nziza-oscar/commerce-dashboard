@@ -8,9 +8,9 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<link href="styles/style.css" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet"/>
     <script>
         tailwind.config = {
             theme: {
@@ -18,91 +18,56 @@
                     colors: {
                         sidebar: '#7E22CE',
                         sidebarHover: '#9333EA',
+                        primary:"#7E22CE"
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-gray-50 h-screen flex poppins-regular" x-data="{ 
-    sidebarOpen: true,
-    activeTab: 'products',
-    searchQuery: '',
-    timeFilter: 'This Month',
-    currentPage: 1,
-    totalPages: 40,
-    products: [
-        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Electronics', price: '200,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-1.png' },
-        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Clothing', price: '10,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-12.png' },
-        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Shoe & Fashion', price: '40,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-3.png' },
-        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Toys & Games', price: '204,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-4.png' },
-        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Home & Kitchen', price: '2,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-5.png' },
-        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Clothing', price: '4,500FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-6.png' },
-        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Toys & Games', price: '4,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-6.png' },
-        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Clothing', price: '5,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-8.png' },
-        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Others', price: '15,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-9.png' },
-        { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Other', price: '20,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-10.png' }
-    ],
-    pages: [1, 5, 10, 15, 25, 30, 40],
-    
-    setPage(page) {
-        this.currentPage = page;
-    },
-    
-    nextPage() {
-        if (this.currentPage < this.totalPages) {
-            this.currentPage++;
-        }
-    },
-    
-    prevPage() {
-        if (this.currentPage > 1) {
-            this.currentPage--;
-        }
-    }
-}">
+<body class="bg-gray-50 h-screen flex poppins-regular" x-data="app()">
     <!-- Sidebar -->
-    <div class="w-64 bg-sidebar text-white flex flex-col h-screen fixed">
+    <div class="w-64 bg-sidebar text-white flex flex-col h-screen fixed hidden sm:block" >
         <!-- Logo -->
         <div class="p-6">
-            <h1 class="text-2xl font-bold text-yellow-400">NIHEMART</h1>
+            <h1 class="text-2xl font-bold text-yellow-400">007 DEV</h1>
         </div>
-        <hr class="mx-2">
+        
         <!-- Navigation -->
         <nav class="flex-1 px-4 py-4">
-            <a href="index.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" ">
+            <a href="index.html" class="flex items-center p-3 mb-2 rounded-lg bg-white/10">
                 <i class="fas fa-th-large w-6"></i>
                 <span class="ml-3">Dashboard</span>
             </a>
             
-            <a href="#" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" :class="{ 'bg-sidebarHover': activeTab === 'orders' }" @click.prevent="activeTab = 'orders'">
+            <a href="orders.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
                 <i class="fas fa-shopping-cart w-6"></i>
                 <span class="ml-3">Orders</span>
             </a>
             
-            <a href="#" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" :class="{ 'bg-sidebarHover': activeTab === 'products' }" @click.prevent="activeTab = 'products'">
+            <a href="products.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
                 <i class="fas fa-box w-6"></i>
                 <span class="ml-3">Products</span>
             </a>
             
-            <a href="#" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" :class="{ 'bg-sidebarHover': activeTab === 'categories' }" @click.prevent="activeTab = 'categories'">
+            <a href="categories.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
                 <i class="fas fa-tags w-6"></i>
                 <span class="ml-3">Categories</span>
             </a>
             
-            <a href="#" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" :class="{ 'bg-sidebarHover': activeTab === 'shipping' }" @click.prevent="activeTab = 'shipping'">
+            <a href="shipping.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
                 <i class="fas fa-truck w-6"></i>
                 <span class="ml-3">Shipping</span>
             </a>
             
-            <a href="#" class="flex items-center p-3 mb-2 rounded-lg hover:bg-sidebarHover" :class="{ 'bg-sidebarHover': activeTab === 'payments' }" @click.prevent="activeTab = 'payments'">
+            <a href="payments.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
                 <i class="fas fa-credit-card w-6"></i>
                 <span class="ml-3">Payments</span>
             </a>
         </nav>
         
         <!-- User Profile -->
-        <div class="p-4 border-t border-purple-800">
+        <a href="account.html" class=" block    p-4 border-t border-purple-800">
             <div class="flex items-center">
                 <div class="w-10 h-10 bg-yellow-200 rounded-full flex items-center justify-center text-purple-800 font-bold">
                     K
@@ -112,16 +77,16 @@
                     <p class="text-xs text-purple-300">kalisajohn250@gmail.com</p>
                 </div>
             </div>
-        </div>
+        </a>
         
         <!-- Settings and Logout -->
         <div class="p-4">
-            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-sidebarHover mb-2">
+            <a href="settings.html" class="flex items-center p-2 rounded-lg hover:bg-white/10 mb-2">
                 <i class="fas fa-cog w-6"></i>
                 <span class="ml-3">Settings</span>
             </a>
             
-            <a href="#" class="flex items-center p-2 rounded-lg hover:bg-sidebarHover">
+            <a href="login.html" class="flex items-center p-2 rounded-lg hover:bg-white/10">
                 <i class="fas fa-sign-out-alt w-6"></i>
                 <span class="ml-3">Logout</span>
             </a>
@@ -129,12 +94,15 @@
     </div>
     
     <!-- Main Content -->
-    <div class="ml-64 flex-1 flex flex-col">
+    <div class="ml-0 sm:ml-64 flex-1 flex flex-col w-full">
         <!-- Header -->
         <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+            <button class="bg-primary px-3 py-2 text-white rounded lg:hidden" @click="openSidebar =!openSidebar">
+                <i class="fa fa-bars"></i>
+            </button>
             <h1 class="text-xl font-bold">ADMIN</h1>
             
-            <div class="flex-1 mx-8">
+            <div class="flex-1 mx-8 hidden sm:block">
                 <div class="relative">
                     <input type="text" placeholder="Search" class="w-full max-w-md pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500" x-model="searchQuery">
                     <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
@@ -153,7 +121,7 @@
                 <div class="flex items-center" x-data="{ profileMenu: false }">
                     <div class="flex items-center cursor-pointer" @click="profileMenu = !profileMenu">
                         <img src="images/avatar-4.jpg" alt="Profile" class="w-10 h-10 rounded-full">
-                        <span class="ml-2 font-medium">John kalisa</span>
+                        <span class="ml-2 font-medium sr-only">John kalisa</span>
                         <i class="fas fa-chevron-down ml-2"></i>
                     </div>
                     
@@ -167,15 +135,18 @@
         </header>
         
         <!-- Content -->
-        <main class="flex-1 p-6">
+        <!-- Content -->
+        <main class="flex-1 p-2 sm:p-6 " style="width: 100% !important; ">
             <div class="mb-6">
                 <h2 class="text-xl font-medium text-gray-700">Product List</h2>
             </div>
             
-            <div class="flex justify-between mb-6">
+            <div class="flex flex-col gap-2 sm:flex-row justify-between mb-6">
+               <div>
                 <button class="px-4 py-2 bg-white border border-orange-500 text-orange-500 rounded-md hover:bg-orange-50">
                     Add Product
                 </button>
+               </div>
                 
                 <div class="flex space-x-4">
                     <div class="relative" x-data="{ open: false }">
@@ -200,78 +171,75 @@
                 </div>
             </div>
             
-            <!-- Product Table -->
-            <div class="bg-white rounded-lg shadow overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-white" >
-                        <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Product ID
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Product Name & Size
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Category
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Price
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Stock
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Review
-                            </th>
-                           
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Action
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200" id="products">
-                        <template x-for="(product, index) in products" :key="index">
+            <div class="rounded-lg shadow p-3 bg-white">
+                <div class="overflow-x-auto w-full">
+                    <table class="w-full min-w-[800px] divide-y divide-gray-200">
+                        <thead class="bg-white">
                             <tr>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" x-text="product.id"></td>
-
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="flex-shrink-0 h-10 w-10">
-                                            <img class="h-10 w-10 rounded-full" :src="product.image" alt="">
-                                        </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-gray-900" x-text="product.name"></div>
-                                            <div class="text-sm text-gray-500" x-text="'Size: ' + product.size"></div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900" x-text="product.category"></div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900" x-text="product.price"></div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900" x-text="product.stock.left + ' Item Left'"></div>
-                                    <div class="text-sm text-gray-500" x-text="product.stock.sold + ' Sold'"></div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <i class="fas fa-star text-yellow-400 mr-1"></i>
-                                        <span class="text-sm text-gray-900" x-text="product.review.rating"></span>
-                                    </div>
-                                    <div class="text-sm text-gray-500" x-text="product.review.count + ' Review'"></div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <button class="text-gray-500 hover:text-gray-700">
-                                        <i class="fas fa-ellipsis-v"></i>
-                                    </button>
-                                </td>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product Name & Size</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stock</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Review</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Action</th>
                             </tr>
-                        </template>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200" id="products">
+                            <template x-for="(product, index) in products" :key="index">
+                                <tr class="border-b">
+                                    <td class="px-6 py-4 text-sm text-gray-900" x-text="product.id"></td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <img class="h-10 w-10 rounded-full" :src="product.image" alt="">
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-gray-900" x-text="product.name"></div>
+                                                <div class="text-sm text-gray-500" x-text="'Size: ' + product.size"></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-sm text-gray-900" x-text="product.category"></td>
+                                    <td class="px-6 py-4 text-sm text-gray-900" x-text="product.price"></td>
+                                    <td class="px-6 py-4">
+                                        <div class="text-sm text-gray-900" x-text="product.stock.left + ' Left'"></div>
+                                        <div class="text-sm text-gray-500" x-text="product.stock.sold + ' Sold'"></div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center">
+                                            <i class="fas fa-star text-yellow-400 mr-1"></i>
+                                            <span class="text-sm text-gray-900" x-text="product.review.rating"></span>
+                                        </div>
+                                        <div class="text-sm text-gray-500" x-text="product.review.count + ' Reviews'"></div>
+                                    </td>
+                                    <td class="px-6 py-4 text-right text-sm font-medium">
+                                        <!-- <button class="text-gray-500 hover:text-gray-700">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button> -->
+                                        <div class="flex items-center justify-center">
+                                            <div x-data="{openDropDown: false}" class="relative">
+                                              <button @click="openDropDown = !openDropDown" class="text-gray-500 dark:text-gray-400">
+                                                <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                  <path fill-rule="evenodd" clip-rule="evenodd" d="M5.99902 10.245C6.96552 10.245 7.74902 11.0285 7.74902 11.995V12.005C7.74902 12.9715 6.96552 13.755 5.99902 13.755C5.03253 13.755 4.24902 12.9715 4.24902 12.005V11.995C4.24902 11.0285 5.03253 10.245 5.99902 10.245ZM17.999 10.245C18.9655 10.245 19.749 11.0285 19.749 11.995V12.005C19.749 12.9715 18.9655 13.755 17.999 13.755C17.0325 13.755 16.249 12.9715 16.249 12.005V11.995C16.249 11.0285 17.0325 10.245 17.999 10.245ZM13.749 11.995C13.749 11.0285 12.9655 10.245 11.999 10.245C11.0325 10.245 10.249 11.0285 10.249 11.995V12.005C10.249 12.9715 11.0325 13.755 11.999 13.755C12.9655 13.755 13.749 12.9715 13.749 12.005V11.995Z" fill=""></path>
+                                                </svg>
+                                              </button>
+                                              <div x-show="openDropDown" @click.outside="openDropDown = false" class="shadow-theme-lg dark:bg-gray-dark absolute top-full right-0 z-40 w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 dark:border-gray-800" style="display: none;">
+                                                <button class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                                  View More
+                                                </button>
+                                                <button class="text-theme-xs flex w-full rounded-lg px-3 py-2 text-left font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                                                  Delete
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
             </div>
+            
             
             <!-- Pagination -->
             <div class="flex justify-center mt-6">
@@ -295,16 +263,50 @@
             </div>
         </main>
     </div>
+
+
+
     <script>
-        document.getElementById("search").addEventListener("input", function () {
-            let filter = this.value.toLowerCase();
-            let rows = document.querySelectorAll("#products tr");
-    
-            rows.forEach(row => {
-                let projectName = row.children[1].textContent.toLowerCase();
-                row.style.display = projectName.includes(filter) ? "" : "none";
-            });
-        });
+        function app(){
+
+            return { 
+                sidebarOpen: true,
+                activeTab: 'products',
+                searchQuery: '',
+                timeFilter: 'This Month',
+                currentPage: 1,
+                totalPages: 40,
+                products: [
+                    { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Electronics', price: '200,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-1.png' },
+                    { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Clothing', price: '10,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-12.png' },
+                    { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Shoe & Fashion', price: '40,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-3.png' },
+                    { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Toys & Games', price: '204,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-4.png' },
+                    { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Home & Kitchen', price: '2,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-5.png' },
+                    { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Clothing', price: '4,500FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-6.png' },
+                    { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Toys & Games', price: '4,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-6.png' },
+                    { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Clothing', price: '5,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-8.png' },
+                    { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Others', price: '15,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-9.png' },
+                    { id: '#2450', name: 'iPhone 15 Pro Max', size: 'S, M, L, XL', category: 'Other', price: '20,000FRW', stock: { left: 486, sold: 155 }, review: { rating: 4.5, count: 55 }, image: 'images/image-10.png' }
+                ],
+                pages: [1, 5, 10, 15],
+                
+                setPage(page) {
+                    this.currentPage = page;
+                },
+                
+                nextPage() {
+                    if (this.currentPage < this.totalPages) {
+                        this.currentPage++;
+                    }
+                },
+                
+                prevPage() {
+                    if (this.currentPage > 1) {
+                        this.currentPage--;
+                    }
+                }
+            }
+        }
     </script>
 </body>
 </html>
