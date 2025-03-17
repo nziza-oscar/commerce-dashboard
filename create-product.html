@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIHEMART Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sidebar: '#7E22CE',
+                        sidebarHover: '#9333EA',
+                        primary:"#7E22CE"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 h-screen flex poppins-regular" x-data="app()">
+    <!-- Sidebar -->
+    <div class="w-64 bg-sidebar text-white flex flex-col h-screen fixed hidden sm:block" >
+        <!-- Logo -->
+        <div class="p-6">
+            <h1 class="text-2xl font-bold text-yellow-400">007 DEV</h1>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="flex-1 px-4 py-4">
+            <a href="index.html" class="flex items-center p-3 mb-2 rounded-lg bg-white/10">
+                <i class="fas fa-th-large w-6"></i>
+                <span class="ml-3">Dashboard</span>
+            </a>
+            
+            <a href="orders.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-shopping-cart w-6"></i>
+                <span class="ml-3">Orders</span>
+            </a>
+            
+            <a href="products.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-box w-6"></i>
+                <span class="ml-3">Products</span>
+            </a>
+            
+            <a href="categories.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-tags w-6"></i>
+                <span class="ml-3">Categories</span>
+            </a>
+            
+            <a href="shipping.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-truck w-6"></i>
+                <span class="ml-3">Shipping</span>
+            </a>
+            
+            <a href="payments.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-credit-card w-6"></i>
+                <span class="ml-3">Payments</span>
+            </a>
+        </nav>
+        
+        <!-- User Profile -->
+        <a href="account.html" class=" block    p-4 border-t border-purple-800">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-yellow-200 rounded-full flex items-center justify-center text-purple-800 font-bold">
+                    K
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium">Kalisa John</p>
+                    <p class="text-xs text-purple-300">kalisajohn250@gmail.com</p>
+                </div>
+            </div>
+        </a>
+        
+        <!-- Settings and Logout -->
+        <div class="p-4">
+            <a href="settings.html" class="flex items-center p-2 rounded-lg hover:bg-white/10 mb-2">
+                <i class="fas fa-cog w-6"></i>
+                <span class="ml-3">Settings</span>
+            </a>
+            
+            <a href="login.html" class="flex items-center p-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-sign-out-alt w-6"></i>
+                <span class="ml-3">Logout</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="ml-0 sm:ml-64 flex-1 flex flex-col w-full" x-data="app()">
+        <!-- Header -->
+        <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+            <button class="bg-primary px-3 py-2 text-white rounded lg:hidden" @click="openSidebar =!openSidebar">
+                <i class="fa fa-bars"></i>
+            </button>
+            <h1 class="text-xl font-bold">ADMIN</h1>
+            
+            <div class="flex-1 mx-8 hidden sm:block">
+                <div class="relative">
+                    <input type="text" placeholder="Search" class="w-full max-w-md pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500" x-model="searchQuery">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="relative">
+                    <i class="fas fa-comment-alt text-blue-500 text-xl"></i>
+                </button>
+                
+                <button class="relative">
+                    <i class="fas fa-bell text-blue-500 text-xl"></i>
+                </button>
+                
+                <div class="flex items-center" x-data="{ profileMenu: false }">
+                    <div class="flex items-center cursor-pointer" @click="profileMenu = !profileMenu">
+                        <img src="images/avatar-4.jpg" alt="Profile" class="w-10 h-10 rounded-full">
+                        <span class="ml-2 font-medium sr-only">John kalisa</span>
+                        <i class="fas fa-chevron-down ml-2"></i>
+                    </div>
+                    
+                    <div x-show="profileMenu" @click.away="profileMenu = false" class="absolute right-4 mt-32 w-48 bg-white rounded-md shadow-lg py-1 z-10" style="display: none;">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Content -->
+        <!-- Content -->
+        <main class="flex-1 p-4 sm:p-6 w-10/12 mx-auto">
+            <div class="mb-6">
+                <h2 class="text-2xl font-medium text-gray-700">Add Product</h2>
+            </div>
+        
+            <div class="mb-6">
+                <a href="#" class="px-4 py-2 border border-orange-500 text-orange-500 rounded-md hover:bg-orange-50 inline-block">
+                    Product List
+                </a>
+            </div>
+        
+            <!-- File Upload Area -->
+            <div class="mb-8">
+                <div 
+                    class="border-2 border-dashed border-blue-300 rounded-lg p-6 sm:p-8 text-center cursor-pointer"
+                    @click="$refs.fileInput.click()"
+                    @dragover.prevent
+                    @drop.prevent="$event.dataTransfer.files.length && handleFileUpload({target: {files: $event.dataTransfer.files}})"
+                >
+                    <input 
+                        type="file" 
+                        multiple 
+                        class="hidden" 
+                        x-ref="fileInput" 
+                        @change="handleFileUpload"
+                        accept=".png,.jpg,.jpeg,.gif"
+                    >
+        
+                    <div class="mb-4">
+                        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center mx-auto">
+                            <i class="fas fa-cloud-upload-alt text-orange-500 text-xl"></i>
+                        </div>
+                    </div>
+        
+                    <h3 class="text-lg font-medium text-gray-700 mb-2">Drop images here, or <span class="text-orange-500">click to browse</span></h3>
+                    <p class="text-gray-500">PNG, JPG, and GIF files are allowed.</p>
+        
+                    <!-- Preview uploaded files -->
+                    <div class="mt-4 flex flex-wrap gap-2 justify-center" x-show="uploadedFiles.length">
+                        <template x-for="(file, index) in uploadedFiles" :key="index">
+                            <div class="relative">
+                                <img :src="URL.createObjectURL(file)" class="w-20 h-20 object-cover rounded-md">
+                                <button 
+                                    @click.stop="uploadedFiles.splice(index, 1)" 
+                                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center"
+                                >
+                                    <i class="fas fa-times text-xs"></i>
+                                </button>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- Product Form -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <!-- Product Name -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Product Name:</label>
+                    <input 
+                        type="text" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500" 
+                        placeholder="Enter Product Name"
+                        x-model="productForm.name"
+                    >
+                </div>
+        
+                <!-- Size -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Size:</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500">
+                        <option value="" disabled selected>Choose Size</option>
+                        <option value="S">Small</option>
+                        <option value="M">Medium</option>
+                        <option value="L">Large</option>
+                        <option value="XL">Extra Large</option>
+                    </select>
+                </div>
+        
+                <!-- Brand -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Brand:</label>
+                    <input 
+                        type="text" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500" 
+                        placeholder="Enter Product Brand"
+                        x-model="productForm.brand"
+                    >
+                </div>
+            </div>
+        
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <!-- Colors -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Colors:</label>
+                    <div class="flex flex-wrap gap-2">
+                        <template x-for="color in availableColors" :key="color.value">
+                            <button 
+                                class="w-10 h-10 rounded-full border-2"
+                                :style="`background-color: ${color.value}; border-color: ${isColorSelected(color.value) ? 'white' : color.value};`"
+                                :class="isColorSelected(color.value) ? 'ring-2 ring-offset-2 ring-gray-400' : ''"
+                                @click="toggleColor(color.value)"
+                            >
+                                <i class="fas fa-check text-white" x-show="isColorSelected(color.value)"></i>
+                            </button>
+                        </template>
+                    </div>
+                </div>
+        
+                <!-- Stock -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Stock:</label>
+                    <input 
+                        type="number" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500" 
+                        placeholder="Enter Stock Quantity"
+                        x-model="productForm.stock"
+                    >
+                </div>
+        
+                <!-- Price -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Price:</label>
+                    <input 
+                        type="text" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500" 
+                        placeholder="Enter Product Price"
+                        x-model="productForm.price"
+                    >
+                </div>
+            </div>
+        
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+                <!-- Gender -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Gender:</label>
+                    <select class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500">
+                        <option value="" disabled selected>Choose Gender</option>
+                        <option value="Men">Men</option>
+                        <option value="Women">Women</option>
+                        <option value="Unisex">Unisex</option>
+                        <option value="Kids">Kids</option>
+                    </select>
+                </div>
+        
+                <!-- Discount -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Discount:</label>
+                    <input 
+                        type="text" 
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500" 
+                        placeholder="Enter Discount"
+                        x-model="productForm.discount"
+                    >
+                </div>
+            </div>
+        
+            <!-- Description -->
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-1">Description:</label>
+                <textarea 
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 h-32 bg-gray-100" 
+                    placeholder="Short Description of product"
+                    x-model="productForm.description"
+                ></textarea>
+            </div>
+        
+            <!-- Save Button -->
+            <div class="mb-8">
+                <button 
+                    class="px-6 py-2 bg-orange-500 text-white rounded-md hover:bg-orange-600 font-medium"
+                    @click="saveProduct"
+                >
+                    Save Product
+                </button>
+            </div>
+        </main>
+        
+    </div>
+
+
+
+    <script>
+        function app(){
+
+            return { 
+                sidebarOpen: true, 
+                activeTab: 'products',
+                searchQuery: '',
+                productForm: {
+                    name: '',
+                    size: '',
+                    brand: '',
+                    colors: [],
+                    stock: '',
+                    gender: '',
+                    price: '',
+                    discount: '',
+                    description: ''
+                },
+                availableColors: [
+                    { name: 'Blue', value: '#3B82F6' },
+                    { name: 'Black', value: '#1F2937' },
+                    { name: 'Pink', value: '#EC4899' },
+                    { name: 'Gray', value: '#6B7280' }
+                ],
+                selectedColors: [],
+                toggleColor(color) {
+                    const index = this.selectedColors.findIndex(c => c === color);
+                    if (index === -1) {
+                        this.selectedColors.push(color);
+                    } else {
+                        this.selectedColors.splice(index, 1);
+                    }
+                },
+                isColorSelected(color) {
+                    return this.selectedColors.includes(color);
+                },
+                uploadedFiles: [],
+                handleFileUpload(event) {
+                    const files = event.target.files;
+                    for (let i = 0; i < files.length; i++) {
+                        this.uploadedFiles.push(files[i]);
+                    }
+                },
+                saveProduct() {
+                    // Here you would normally send the data to your backend
+                    console.log('Product data:', this.productForm);
+                    console.log('Selected colors:', this.selectedColors);
+                    console.log('Uploaded files:', this.uploadedFiles);
+                    alert('Product saved successfully!');
+                }
+            }
+        }
+    </script>
+</body>
+</html>
