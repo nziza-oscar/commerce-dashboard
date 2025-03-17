@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NIHEMART Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link href="styles/style.css" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sidebar: '#7E22CE',
+                        sidebarHover: '#9333EA',
+                        primary:"#7E22CE"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 h-screen flex poppins-regular" x-data="app()">
+    <!-- Sidebar -->
+    <div class="w-64 bg-sidebar text-white flex flex-col h-screen fixed hidden sm:block" >
+        <!-- Logo -->
+        <div class="p-6">
+            <h1 class="text-2xl font-bold text-yellow-400">007 DEV</h1>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="flex-1 px-4 py-4">
+            <a href="index.html" class="flex items-center p-3 mb-2 rounded-lg bg-white/10">
+                <i class="fas fa-th-large w-6"></i>
+                <span class="ml-3">Dashboard</span>
+            </a>
+            
+            <a href="orders.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-shopping-cart w-6"></i>
+                <span class="ml-3">Orders</span>
+            </a>
+            
+            <a href="products.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-box w-6"></i>
+                <span class="ml-3">Products</span>
+            </a>
+            
+            <a href="categories.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-tags w-6"></i>
+                <span class="ml-3">Categories</span>
+            </a>
+            
+            <a href="shipping.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-truck w-6"></i>
+                <span class="ml-3">Shipping</span>
+            </a>
+            
+            <a href="payments.html" class="flex items-center p-3 mb-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-credit-card w-6"></i>
+                <span class="ml-3">Payments</span>
+            </a>
+        </nav>
+        
+        <!-- User Profile -->
+        <a href="account.html" class=" block    p-4 border-t border-purple-800">
+            <div class="flex items-center">
+                <div class="w-10 h-10 bg-yellow-200 rounded-full flex items-center justify-center text-purple-800 font-bold">
+                    K
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium">Kalisa John</p>
+                    <p class="text-xs text-purple-300">kalisajohn250@gmail.com</p>
+                </div>
+            </div>
+        </a>
+        
+        <!-- Settings and Logout -->
+        <div class="p-4">
+            <a href="settings.html" class="flex items-center p-2 rounded-lg hover:bg-white/10 mb-2">
+                <i class="fas fa-cog w-6"></i>
+                <span class="ml-3">Settings</span>
+            </a>
+            
+            <a href="login.html" class="flex items-center p-2 rounded-lg hover:bg-white/10">
+                <i class="fas fa-sign-out-alt w-6"></i>
+                <span class="ml-3">Logout</span>
+            </a>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="ml-0 sm:ml-64 flex-1 flex flex-col w-full">
+        <!-- Header -->
+        <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+            <button class="bg-primary px-3 py-2 text-white rounded lg:hidden" @click="openSidebar =!openSidebar">
+                <i class="fa fa-bars"></i>
+            </button>
+            <h1 class="text-xl font-bold">ADMIN</h1>
+            
+            <div class="flex-1 mx-8 hidden sm:block">
+                <div class="relative">
+                    <input type="text" placeholder="Search" class="w-full max-w-md pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500" x-model="searchQuery">
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <button class="relative">
+                    <i class="fas fa-comment-alt text-blue-500 text-xl"></i>
+                </button>
+                
+                <button class="relative">
+                    <i class="fas fa-bell text-blue-500 text-xl"></i>
+                </button>
+                
+                <div class="flex items-center" x-data="{ profileMenu: false }">
+                    <div class="flex items-center cursor-pointer" @click="profileMenu = !profileMenu">
+                        <img src="images/avatar-4.jpg" alt="Profile" class="w-10 h-10 rounded-full">
+                        <span class="ml-2 font-medium sr-only">John kalisa</span>
+                        <i class="fas fa-chevron-down ml-2"></i>
+                    </div>
+                    
+                    <div x-show="profileMenu" @click.away="profileMenu = false" class="absolute right-4 mt-32 w-48 bg-white rounded-md shadow-lg py-1 z-10" style="display: none;">
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Your Profile</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Content -->
+        <!-- Content -->
+        <main class="flex-1 p-2 sm:p-6  mx-auto overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-medium text-gray-700">Categories</h2>
+                <button 
+                @click="showAddCategoryModal = true" 
+                class="px-4 py-2 border border-orange-500 text-orange-500 rounded-md hover:bg-orange-50 inline-block"
+            >
+                Add Category
+            </button>
+            </div>
+            
+            <!-- Categories Table -->
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <div class="min-w-full divide-y divide-gray-200">
+                    <!-- Table Header -->
+                    <div class="bg-gray-50 hidden sm:flex">
+                        <div class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/4">
+                            Category
+                        </div>
+                        <div class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-2/4">
+                            Description
+                        </div>
+                        <div class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/6">
+                            Product Stock
+                        </div>
+                        <div class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-1/12">
+                            Action
+                        </div>
+                    </div>
+                    
+                    <!-- Table Body -->
+                    <div class="bg-white divide-y divide-gray-200">
+                        <template x-for="category in categories" :key="category.id">
+                            <div class="flex flex-col sm:flex-row hover:bg-gray-50">
+                                <!-- Category -->
+                                <div class="px-6 py-4 w-full sm:w-1/4">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 h-10 w-10">
+                                            <img class="h-10 w-10 rounded-md" :src="category.image" :alt="category.name">
+                                        </div>
+                                        <div class="ml-4">
+                                            <div class="text-sm font-medium text-gray-900" x-text="category.name"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Description -->
+                                <div class="px-6 py-4 w-full sm:w-2/4">
+                                    <div class="text-sm text-gray-500" x-text="category.description"></div>
+                                </div>
+                                
+                                <!-- Product Stock -->
+                                <div class="px-6 py-4 w-full sm:w-1/6">
+                                    <div class="text-sm text-gray-900" x-text="category.stock"></div>
+                                </div>
+                                
+                                <!-- Action -->
+                                <div class="px-6 py-4 w-full sm:w-1/12 relative">
+                                    <button @click="toggleCategoryMenu(category.id)" class="text-gray-500 hover:text-gray-700">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    
+                                    <!-- Dropdown Menu -->
+                                    <div 
+                                        x-show="showCategoryMenu === category.id" 
+                                        @click.away="showCategoryMenu = null"
+                                        class="absolute right-6 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10"
+                                        style="display: none;"
+                                    >
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Edit</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Delete</a>
+                                        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">View Products</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    
+    
+     <!-- Add Category Modal -->
+     <div 
+     x-show="showAddCategoryModal" 
+     class="fixed inset-0 z-50 overflow-y-auto" 
+     style="display: none;"
+ >
+     <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+         <!-- Background overlay -->
+         <div 
+             x-show="showAddCategoryModal" 
+             x-transition:enter="ease-out duration-300" 
+             x-transition:enter-start="opacity-0" 
+             x-transition:enter-end="opacity-100" 
+             x-transition:leave="ease-in duration-200" 
+             x-transition:leave-start="opacity-100" 
+             x-transition:leave-end="opacity-0" 
+             class="fixed inset-0 transition-opacity" 
+             @click="showAddCategoryModal = false"
+         >
+             <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+         </div>
+         
+         <!-- Modal panel -->
+         <div 
+             x-show="showAddCategoryModal" 
+             x-transition:enter="ease-out duration-300" 
+             x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+             x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" 
+             x-transition:leave="ease-in duration-200" 
+             x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" 
+             x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" 
+             class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full"
+         >
+             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                 <div class="sm:flex sm:items-start">
+                     <div class="w-full">
+                         <div class="flex justify-between items-center mb-4 text-orange-500">
+                             <h3 class="text-lg leading-6 uppercase font-bold">Add Category</h3>
+                             <button @click="showAddCategoryModal = false" class="text-gray-400 hover:text-gray-500">
+                                 <i class="fas fa-times"></i>
+                             </button>
+                         </div>
+                         
+                         
+                         
+                         <!-- File Upload Area -->
+                         <div class="mb-6">
+                             <h4 class="text-sm font-medium text-gray-700 mb-2">Add Background Photo</h4>
+                             <div 
+                                 class="border-2 border-dashed border-blue-300 rounded-lg p-4 text-center cursor-pointer"
+                                 @click="$refs.fileInput.click()"
+                                 @dragover.prevent
+                                 @drop.prevent="$event.dataTransfer.files.length && handleFileUpload({target: {files: $event.dataTransfer.files}})"
+                             >
+                                 <input 
+                                     type="file" 
+                                     multiple 
+                                     class="hidden" 
+                                     x-ref="fileInput" 
+                                     @change="handleFileUpload"
+                                     accept=".png,.jpg,.jpeg,.gif"
+                                 >
+                                 
+                                 <div class="mb-4">
+                                     <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center mx-auto">
+                                         <i class="fas fa-cloud-upload-alt text-orange-500 text-xl"></i>
+                                     </div>
+                                 </div>
+                                 
+                                 <h3 class="text-base font-medium text-gray-700 mb-2">Drop your images here, or <span class="text-orange-500">click to browse</span></h3>
+                                 <p class="text-gray-500 text-sm">recommended. PNG, JPG and GIF files are allowed</p>
+                                 
+                                 <!-- Preview uploaded files -->
+                                 <div class="mt-4 flex flex-wrap gap-2 justify-center" x-show="uploadedFiles.length">
+                                     <template x-for="(file, index) in uploadedFiles" :key="index">
+                                         <div class="relative">
+                                             <img :src="URL.createObjectURL(file)" class="w-16 h-16 object-cover rounded-md">
+                                             <button 
+                                                 @click.stop="uploadedFiles.splice(index, 1)" 
+                                                 class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center"
+                                             >
+                                                 <i class="fas fa-times text-xs"></i>
+                                             </button>
+                                         </div>
+                                     </template>
+                                 </div>
+                             </div>
+                         </div>
+                         
+                         <!-- Form Fields -->
+                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                             <!-- Category Title -->
+                             <div>
+                                 <label class="block text-sm font-medium text-gray-700 mb-1">Category Title</label>
+                                 <input 
+                                     type="text" 
+                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" 
+                                     placeholder="Enter Category Title..."
+                                     x-model="newCategory.title"
+                                 >
+                             </div>
+                             
+                             <!-- Stock -->
+                             <div>
+                                 <label class="block text-sm font-medium text-gray-700 mb-1">Stock</label>
+                                 <input 
+                                     type="text" 
+                                     class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" 
+                                     placeholder="Enter Product Instock..."
+                                     x-model="newCategory.stock"
+                                 >
+                             </div>
+                         </div>
+                         
+                         
+                         
+                         <!-- Description -->
+                         <div class="mb-6">
+                             <label class="block text-sm font-medium text-gray-700 mb-1">Description:</label>
+                             <textarea 
+                                 class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 h-32 bg-gray-100" 
+                                 placeholder="Short Description of product"
+                                 x-model="newCategory.description"
+                             ></textarea>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             
+             <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                 <button 
+                     type="button" 
+                     class="w-full inline-flex justify-center rounded-md border border-orange-500 shadow-sm px-4 py-2 bg-white text-base font-medium text-orange-500 hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 sm:ml-3 sm:w-auto sm:text-sm"
+                     @click="saveCategory"
+                 >
+                     Save
+                 </button>
+                 <button 
+                     type="button" 
+                     class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                     @click="showAddCategoryModal = false"
+                 >
+                     Cancel
+                 </button>
+             </div>
+         </div>
+     </div>
+ </div>
+    
+    
+    
+
+    <script>
+        function app(){
+
+            return { 
+                sidebarOpen: false,
+    activeTab: 'categories',
+    searchQuery: '',
+    showAddCategoryModal: false,
+    categories: [
+        {
+            id: 1,
+            name: 'Electronics',
+            image: 'images/image-1.png',
+            description: 'Products related to technology and gadgets, such as smartphones, laptops, cameras, and accessories.',
+            stock: 24
+        },
+        {
+            id: 2,
+            name: 'Clothing',
+            image: 'images/image-12.png',
+            description: 'Apparel and accessories for men, women, and children, including clothing, shoes, bags, and jewelry.',
+            stock: 203
+        },
+        {
+            id: 3,
+            name: 'Shoe & Fashion',
+            image: 'images/image-3.png',
+            description: 'Apparel and accessories for footwear and fashion, including clothes, shoes, bags and jewelry.',
+            stock: 100
+        },
+        {
+            id: 4,
+            name: 'Toys & Games',
+            image: 'images/image-4.png',
+            description: 'Children\'s toys, board games, educational games, and outdoor play equipment.',
+            stock: 180
+        },
+        {
+            id: 5,
+            name: 'Home & Kitchen',
+            image: 'images/image-5.png',
+            description: 'Children\'s toys, board games, educational games, and outdoor play equipment.',
+            stock: 200
+        }
+    ],
+    showCategoryMenu: null,
+    toggleCategoryMenu(id) {
+        this.showCategoryMenu = this.showCategoryMenu === id ? null : id;
+    },
+    showCategoryMenu: null,
+    toggleCategoryMenu(id) {
+        this.showCategoryMenu = this.showCategoryMenu === id ? null : id;
+    },
+    newCategory: {
+        title: '',
+        stock: '',
+        productName: '',
+        description: ''
+    },
+    uploadedFiles: [],
+    handleFileUpload(event) {
+        const files = event.target.files;
+        for (let i = 0; i < files.length; i++) {
+            this.uploadedFiles.push(files[i]);
+        }
+    },
+    saveCategory() {
+        // Here you would normally send the data to your backend
+        console.log('Category data:', this.newCategory);
+        console.log('Uploaded files:', this.uploadedFiles);
+        
+        // Add the new category to the list (in a real app, you'd get the ID from the server)
+        this.categories.push({
+            id: this.categories.length + 1,
+            name: this.newCategory.title,
+            image: this.uploadedFiles.length > 0 ? URL.createObjectURL(this.uploadedFiles[0]) : '/placeholder.svg?height=40&width=40',
+            description: this.newCategory.description,
+            stock: parseInt(this.newCategory.stock) || 0
+        });
+        
+        // Reset form and close modal
+        this.newCategory = {
+            title: '',
+            stock: '',
+            productName: '',
+            description: ''
+        };
+        this.uploadedFiles = [];
+        this.showAddCategoryModal = false;
+        
+        // Show success message (in a real app, you'd use a proper notification system)
+        alert('Category saved successfully!');
+    }
+
+    
+}
+        
+        
+        }
+    </script>
+</body>
+</html>
